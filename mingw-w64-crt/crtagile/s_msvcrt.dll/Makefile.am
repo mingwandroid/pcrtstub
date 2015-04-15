@@ -1,6 +1,6 @@
-stub_LIBRARIES = msvcrt.a
+lib_LIBRARIES = libmsvcrt.a
 
-msvcrt_SOURCES = \
+libmsvcrt_a_SOURCES = \
 	do_init.c \
 	sec_start.S \
 	imp__daylight.S \
@@ -2149,5 +2149,4 @@ msvcrt_SOURCES = \
 	stub_wscanf.S \
 	imp_wscanf.S \
 	stub_wscanf_s.S \
-	imp_wscanf_s.S \
-
+	imp_wscanf_s.S

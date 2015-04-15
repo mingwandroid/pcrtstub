@@ -5990,7 +5990,7 @@ esac
 
 
 
-ac_config_files="$ac_config_files Makefile"
+ac_config_files="$ac_config_files Makefile crtagile/Makefile crtagile/s_msvcrt.dll/Makefile"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -6776,6 +6776,8 @@ do
     "config.h") CONFIG_HEADERS="$CONFIG_HEADERS config.h" ;;
     "depfiles") CONFIG_COMMANDS="$CONFIG_COMMANDS depfiles" ;;
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
+    "crtagile/Makefile") CONFIG_FILES="$CONFIG_FILES crtagile/Makefile" ;;
+    "crtagile/s_msvcrt.dll/Makefile") CONFIG_FILES="$CONFIG_FILES crtagile/s_msvcrt.dll/Makefile" ;;
 
   *) as_fn_error $? "invalid argument: \`$ac_config_target'" "$LINENO" 5;;
   esac

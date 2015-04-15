@@ -1,0 +1,14 @@
+*.o
+*.a
+*.exe
+.dirstamp
+Makefile
+config.h
+.deps
+*.in~
+*.cache
+*.status
+*.log
+stamp-h1
+*.am.user
+

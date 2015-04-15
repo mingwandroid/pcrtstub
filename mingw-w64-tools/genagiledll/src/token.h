@@ -42,7 +42,9 @@ typedef struct sSymbol {
 } sSymbol;
 
 extern sSymbol *t_sym;
+/* The input dll filename. */
 extern const char *cur_libname;
+/* The input dll filename without extension. */
 extern const char *cur_libbasename;
 
 const char *unifyStr (const char *);
