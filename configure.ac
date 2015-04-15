@@ -82,42 +82,42 @@ AC_MSG_RESULT([$with_libraries])
 AC_MSG_CHECKING([whether to build the optional tools])
 AC_ARG_WITH([tools],
   [AS_HELP_STRING([--with-tools=ARG],
-    [Build the extra mingw-w64 tools, where ARG is one of gendef, genidl, genstubdll or all])],
+    [Build the extra mingw-w64 tools, where ARG is one of gendef, genidl, genagiledll or all])],
   [],
   [with_tools=no])
 AS_CASE([$with_tools],
   [yes|all],[
-    with_tools="gendef,genidl,genstubdll"
+    with_tools="gendef,genidl,genagiledll"
     with_tools_gendef=yes
     with_tools_genidl=yes
-    with_tools_genstubdll=yes],
+    with_tools_genagiledll=yes],
   [gendef],[
     with_tools="gendef"
     with_tools_gendef=yes
     with_tools_genidl=no
-    with_tools_genstubdll=no],
+    with_tools_genagiledll=no],
   [genidl],[
     with_tools="genidl"
     with_tools_gendef=no
     with_tools_genidl=yes
-    with_tools_genstubdll=no],
-  [genstubdll,[
-    with_tools="genstubdll"
+    with_tools_genagiledll=no],
+  [genagiledll,[
+    with_tools="genagiledll"
     with_tools_gendef=no
     with_tools_genidl=no
-    with_tools_genstubdll=yes],
+    with_tools_genagiledll=yes],
   ]
   [no],[
     with_tools_gendef=no
     with_tools_genidl=no
-    with_tools_genstubdll=no],
+    with_tools_genagiledll=no],
   [MW64_OPTION_ERROR([with-tools])])
 AM_CONDITIONAL([TOOLS_GENDEF],[test "x$with_tools_gendef" = xyes])
 AM_CONDITIONAL([TOOLS_GENIDL],[test "x$with_tools_genidl" = xyes])
-AM_CONDITIONAL([TOOLS_GENSTUBDLL],[test "x$with_tools_genstubdll" = xyes])
+AM_CONDITIONAL([TOOLS_GENAGILEDLL],[test "x$with_tools_genagiledll" = xyes])
 AM_COND_IF([TOOLS_GENDEF],[AC_CONFIG_SUBDIRS([mingw-w64-tools/gendef])])
 AM_COND_IF([TOOLS_GENIDL],[AC_CONFIG_SUBDIRS([mingw-w64-tools/genidl])])
-AM_COND_IF([TOOLS_GENSTUBDLL],[AC_CONFIG_SUBDIRS([mingw-w64-tools/genstubdll])])
+AM_COND_IF([TOOLS_GENAGILEDLL],[AC_CONFIG_SUBDIRS([mingw-w64-tools/genagiledll])])
 AC_MSG_RESULT([$with_tools])
 
 AC_CONFIG_FILES([Makefile])
