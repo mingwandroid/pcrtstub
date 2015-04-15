@@ -20,7 +20,7 @@ ___IAT_msvcrt_dll:
 #error "Unknown target"
 #endif
 
-	.section .rdata$imp.xxxxxxxx, "dr"
+	.section .rdata$imp.msvcrt.dll.xxxxxxxx, "dr"
 	.linkonce
 #ifdef __x86_64__
 	.align 8

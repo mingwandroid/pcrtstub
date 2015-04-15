@@ -70,10 +70,21 @@ static void printStubCode (FILE *fp, const char *hname, const char *sym)
     "#endif\n");
 }
 
+static FILE *
+addSrcFopen (FILE *makefile, const char * pth, const char * filename,const char * mode) {
+    FILE *result = fopen (unifyCat (pth, filename), mode);
+    if (result != NULL) {
+        fprintf (makefile, "\t%s \\\n", filename);
+    }
+    return result;
+}
+
+
 void
 outputSyms (void)
 {
   FILE *fp;
+  FILE *makefile;
   sSymbol *l;
   const char *pth = unifyCat ("./s_", cur_libname);
 
@@ -83,11 +94,18 @@ outputSyms (void)
 
   pth = unifyCat (pth, "/");
 
-  fp = fopen (unifyCat (pth, "do_init.c"), "wb");
+  makefile = fopen (unifyCat (pth, "Makefile.am"), "w");
+  if (makefile == NULL) {
+      fprintf(stderr, "Error: Failed to crate Makefile.am\n");
+      exit(-1);
+  }
+  fprintf (makefile, "stub_LIBRARIES = %s.a\n\n", cur_libbasename);
+  fprintf (makefile, "%s_SOURCES = \\\n", cur_libbasename);
+  fp = addSrcFopen (makefile, pth, "do_init.c", "wb");
   generate_stub_c (fp);
   fclose (fp);
 
-  fp = fopen (unifyCat (pth, "sec_start.S"), "wb");
+  fp = addSrcFopen (makefile, pth, "sec_start.S", "wb");
   printHeader (fp);
 
   fprintf (fp, "\t.section .rdata, \"dr\"\n");
@@ -122,13 +140,13 @@ outputSyms (void)
 
       if (l->is_data == 0)
       {
-	fp = fopen (unifyCat (pth, unifyCat ("stub_", hname)), "wb");
+    fp = addSrcFopen (makefile, pth, unifyCat ("stub_", hname), "wb");
 
 	printStubCode (fp, hname, l->sym);
 
 	fclose (fp);
       }
-      fp = fopen (unifyCat (pth, unifyCat ("imp_", hname)), "wb");
+      fp = addSrcFopen (makefile, pth, unifyCat ("imp_", hname), "wb");
 
       printHeader (fp);
 
@@ -225,6 +243,8 @@ outputSyms (void)
 
       l = l->next;
     }
+  fprintf (makefile, "\n");
+  fclose (makefile);
 }
 
 static void generate_stub_c (FILE *fp)

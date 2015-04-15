@@ -43,6 +43,7 @@ typedef struct sSymbol {
 
 extern sSymbol *t_sym;
 extern const char *cur_libname;
+extern const char *cur_libbasename;
 
 const char *unifyStr (const char *);
 const char *unifyCat (const char *, const char *);

@@ -283,6 +283,7 @@ redo:
 }
 
 const char *cur_libname = "";
+const char *cur_libbasename = "";
 static const char *cur_symbol = "";
 static const char *cur_libsymbol = "";
 static const char *cur_alias = "";
@@ -310,6 +311,7 @@ expect_newline (const char *stmt)
 static int parseit (void)
 {
   int r;
+  char *dot = NULL;
 
   if (!exports_seen) {
     if ((r = lexit2 ()) == -1)
@@ -329,6 +331,10 @@ static int parseit (void)
 	}
 
       cur_libname = unifyStr (t_buf);
+      if ((dot = strchr(t_buf, '.')) != NULL) {
+          *dot = '\0';
+          cur_libbasename = unifyStr (t_buf);
+      }
 
       fprintf (stderr, "Current library-name set to ,%s'\n", cur_libname);
 
