@@ -462,10 +462,18 @@ void dumpSymbols (void)
   }
 }
 
-int main()
+int main(int argc, char *argv[])
 {
   int r;
-  t_in = stdin;
+  if (argc > 1) {
+      t_in = fopen (argv[1], "r");
+      if (t_in == NULL) {
+          fprintf (stderr, "file %s doesn't exist, using stdin\n", argv[1]);
+      }
+  }
+  if (t_in == NULL) {
+      t_in = stdin;
+  }
 
   addCh (-1);
 
