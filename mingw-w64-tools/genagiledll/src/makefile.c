@@ -80,6 +80,13 @@ FILE *makefileCreate (const char * pth)
           fprintf (makefile, "html:\n\n");
           fprintf (makefile, "tags:\n\n");
           fprintf (makefile, "ctags:\n\n");
+
+          /* Output some rule overrides. */
+          fprintf (makefile, "%%.o: %%.S\n");
+          fprintf (makefile, "\t@CCAS@ @CCASFLAGS@ -c -o $@ $<\n\n");
+
+          fprintf (makefile, "%%.o: %%.c\n");
+          fprintf (makefile, "\t@ac_ct_CC@ @CFLAGS@ -c -o $@ $<\n\n");
       }
   }
   return makefile;
@@ -130,10 +137,11 @@ static void makefilePrintPrologueIn (FILE *makefile)
   for (i = 0; i < group_lib_num; ++i) {
       fprintf (makefile, " $(lib%s%d_OBJECTS)", cur_libbasename, i + 1);
   }
-  fprintf (makefile, "\n\t@-rm lib%s.a\n", cur_libbasename);
+  fprintf (makefile, "\n\t@-test -f lib%s.a && rm lib%s.a\n", cur_libbasename, cur_libbasename);
   for (i = 0; i < group_lib_num; ++i) {
-      fprintf (makefile, "\tar cru lib%s.a $(lib%s%d_OBJECTS)\n", cur_libbasename, cur_libbasename, i + 1);
+      fprintf (makefile, "\t@ac_ct_AR@ cru lib%s.a $(lib%s%d_OBJECTS)\n", cur_libbasename, cur_libbasename, i + 1);
   }
+  fprintf (makefile, "\t@RANLIB@ $@\n\n");
 }
 
 void makefilePrintPrologue (FILE *makefile)
