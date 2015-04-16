@@ -7,6 +7,7 @@ AC_INIT([mingw-w64-runtime],[4.0b],[mingw-w64-public@lists.sourceforge.net])
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_SRCDIR([ChangeLog])
 AC_CONFIG_HEADER([config.h])
+AC_CONFIG_SUBDIRS([crtagile])
 
 AM_INIT_AUTOMAKE([1.14 foreign subdir-objects])
 AM_MAINTAINER_MODE
@@ -291,7 +292,7 @@ AC_SUBST(ADD_C_ONLY_WARNING_FLAGS)
 AC_SUBST(ADD_C_CXX_WARNING_FLAGS)
 AC_SUBST(ADD_CXX_ONLY_WARNING_FLAGS)
 
-AC_CONFIG_FILES([Makefile crtagile/Makefile crtagile/s_msvcrt.dll/Makefile])
+AC_CONFIG_FILES([Makefile])
 AC_OUTPUT
 
 AC_MSG_NOTICE([])
