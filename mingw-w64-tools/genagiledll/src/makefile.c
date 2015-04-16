@@ -36,6 +36,11 @@ static int use_am_libtool = 0;
 static int group_file_count = 0;
 static int group_lib_num = 0;
 
+static char *makefileInstallDir ()
+{
+  return "@libdir@";
+}
+
 FILE *makefileCreate (const char * pth)
 {
   FILE *makefile = NULL;
@@ -51,6 +56,10 @@ FILE *makefileCreate (const char * pth)
       printHeader (makefile, "#", "");
       if (use_am_libtool == 0) {
 
+          fprintf (makefile, "VPATH = @srcdir@\n");
+          fprintf (makefile, "prefix = @prefix@\n");
+          fprintf (makefile, "exec_prefix = @exec_prefix@\n\n");
+
           /* http://www.gnu.org/software/automake/manual/automake.html#Third_002dParty-Makefiles */
           fprintf (makefile, "all: lib%s.a\n\n", cur_libbasename);
           fprintf (makefile, "distdir:\n\tcp *.c *.S Makefile.in @PACKAGE@-@VERSION@/s_%s/\n\n", cur_libname);
@@ -58,9 +67,9 @@ FILE *makefileCreate (const char * pth)
           fprintf (makefile, "clean: mostlyclean\n\n");
           fprintf (makefile, "distclean: clean\n\trm Makefile\n\n");
           fprintf (makefile, "maintainer-clean: distclean\n\n");
-          fprintf (makefile, "installdirs:\n\tmkdir -p @libdir@/s_%s\n\n", cur_libname);
-          fprintf (makefile, "install:\n\tcp lib%s.a @libdir@/s_%s/lib%s.a\n\n", cur_libbasename, cur_libname, cur_libbasename);
-          fprintf (makefile, "uninstall:\n\trm @libdir@/s_%s/lib%s.a\n\n", cur_libbasename, cur_libname);
+          fprintf (makefile, "installdirs:\n\tmkdir -p %s\n\n", makefileInstallDir ());
+          fprintf (makefile, "install: installdirs\n\tcp lib%s.a %s/lib%s.a\n\n", cur_libbasename, makefileInstallDir (), cur_libbasename);
+          fprintf (makefile, "uninstall:\n\trm %s/lib%s.a\n\n", makefileInstallDir (), cur_libbasename);
 
           /* Empty and simple forwarding rules. */
           fprintf (makefile, "distclean-recursive: distclean\n\n");
@@ -92,12 +101,12 @@ FILE *makefileCreate (const char * pth)
   return makefile;
 }
 
-static void makefileStartGroupAmLibtool (FILE *makefile)
+static void makefileStartGroup_AcAmLibtool (FILE *makefile)
 {
   fprintf (makefile, "%slib%s%d_la_SOURCES = \\\n", group_lib_num > 1 ? "\n" : "", cur_libbasename, group_lib_num);
 }
 
-static void makefileStartGroupIn (FILE *makefile)
+static void makefileStartGroup_Ac (FILE *makefile)
 {
   fprintf (makefile, "%slib%s%d_OBJECTS =\n", group_lib_num > 1 ? "\n" : "", cur_libbasename, group_lib_num);
 }
@@ -107,13 +116,13 @@ void makefileStartGroup (FILE *makefile)
     ++group_lib_num;
     group_file_count = 0;
     if (use_am_libtool) {
-        makefileStartGroupAmLibtool (makefile);
+        makefileStartGroup_AcAmLibtool (makefile);
     } else {
-        makefileStartGroupIn (makefile);
+        makefileStartGroup_Ac (makefile);
     }
 }
 
-static void makefilePrintPrologueAmLibtool (FILE *makefile)
+static void makefilePrintPrologue_AcAmLibtool (FILE *makefile)
 {
   int i;
   fprintf (makefile, "\nnoinst_LTLIBRARIES =");
@@ -130,26 +139,26 @@ static void makefilePrintPrologueAmLibtool (FILE *makefile)
   fprintf (makefile, "\n");
 }
 
-static void makefilePrintPrologueIn (FILE *makefile)
+static void makefilePrintPrologue_Ac (FILE *makefile)
 {
   int i;
   fprintf (makefile, "\nlib%s.a:", cur_libbasename);
   for (i = 0; i < group_lib_num; ++i) {
       fprintf (makefile, " $(lib%s%d_OBJECTS)", cur_libbasename, i + 1);
   }
-  fprintf (makefile, "\n\t@-test -f lib%s.a && rm lib%s.a\n", cur_libbasename, cur_libbasename);
+  fprintf (makefile, "\n\t@-rm lib%s.a || true\n", cur_libbasename);
   for (i = 0; i < group_lib_num; ++i) {
       fprintf (makefile, "\t@ac_ct_AR@ cru lib%s.a $(lib%s%d_OBJECTS)\n", cur_libbasename, cur_libbasename, i + 1);
   }
-  fprintf (makefile, "\t@RANLIB@ $@\n\n");
+  fprintf (makefile, "\t@RANLIB@ $@\n");
 }
 
 void makefilePrintPrologue (FILE *makefile)
 {
   if (use_am_libtool) {
-      makefilePrintPrologueAmLibtool (makefile);
+      makefilePrintPrologue_AcAmLibtool (makefile);
   } else {
-      makefilePrintPrologueIn (makefile);
+      makefilePrintPrologue_Ac (makefile);
   }
 }
 

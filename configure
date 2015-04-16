@@ -588,6 +588,8 @@ ac_unique_file="AUTHORS"
 enable_option_checking=no
 ac_subst_vars='LTLIBOBJS
 LIBOBJS
+TOOLS_GENAGILEDLL_FALSE
+TOOLS_GENAGILEDLL_TRUE
 TOOLS_GENIDL_FALSE
 TOOLS_GENIDL_TRUE
 TOOLS_GENDEF_FALSE
@@ -695,7 +697,8 @@ mingw-w64-crt
 mingw-w64-libraries/libmangle
 mingw-w64-libraries/pseh
 mingw-w64-tools/gendef
-mingw-w64-tools/genidl'
+mingw-w64-tools/genidl
+mingw-w64-tools/genagiledll'
 
 # Initialize some variables set by options.
 ac_init_help=
@@ -1327,7 +1330,7 @@ Optional Packages:
   --with-libraries=ARG    Build the extra mingw-w64 libs, where ARG is one of
                           libmangle, pseh, or all
   --with-tools=ARG        Build the extra mingw-w64 tools, where ARG is one of
-                          gendef, genidl, or all
+                          gendef, genidl, genagiledll or all
 
 Report bugs to <mingw-w64-public@lists.sourceforge.net>.
 _ACEOF
@@ -2611,23 +2614,33 @@ fi
 case $with_tools in #(
   yes|all) :
 
-    with_tools="gendef,genidl"
+    with_tools="gendef,genidl,genagiledll"
     with_tools_gendef=yes
-    with_tools_genidl=yes ;; #(
+    with_tools_genidl=yes
+    with_tools_genagiledll=yes ;; #(
   gendef) :
 
     with_tools="gendef"
     with_tools_gendef=yes
-    with_tools_genidl=no ;; #(
+    with_tools_genidl=no
+    with_tools_genagiledll=no ;; #(
   genidl) :
 
     with_tools="genidl"
     with_tools_gendef=no
-    with_tools_genidl=yes ;; #(
+    with_tools_genidl=yes
+    with_tools_genagiledll=no ;; #(
+  genagiledll,
+    with_tools="genagiledll"
+    with_tools_gendef=no
+    with_tools_genidl=no
+    with_tools_genagiledll=yes,
+
   no) :
 
     with_tools_gendef=no
-    with_tools_genidl=no ;; #(
+    with_tools_genidl=no
+    with_tools_genagiledll=no ;; #(
   *) :
     as_fn_error $? "Invalid argument to --with-tools: $with_tools" "$LINENO" 5 ;;
 esac
@@ -2647,12 +2660,24 @@ else
   TOOLS_GENIDL_FALSE=
 fi
 
+ if test "x$with_tools_genagiledll" = xyes; then
+  TOOLS_GENAGILEDLL_TRUE=
+  TOOLS_GENAGILEDLL_FALSE='#'
+else
+  TOOLS_GENAGILEDLL_TRUE='#'
+  TOOLS_GENAGILEDLL_FALSE=
+fi
+
 if test -z "$TOOLS_GENDEF_TRUE"; then :
   subdirs="$subdirs mingw-w64-tools/gendef"
 
 fi
 if test -z "$TOOLS_GENIDL_TRUE"; then :
   subdirs="$subdirs mingw-w64-tools/genidl"
+
+fi
+if test -z "$TOOLS_GENAGILEDLL_TRUE"; then :
+  subdirs="$subdirs mingw-w64-tools/genagiledll"
 
 fi
 { $as_echo "$as_me:${as_lineno-$LINENO}: result: $with_tools" >&5
@@ -2804,6 +2829,10 @@ Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 if test -z "${TOOLS_GENIDL_TRUE}" && test -z "${TOOLS_GENIDL_FALSE}"; then
   as_fn_error $? "conditional \"TOOLS_GENIDL\" was never defined.
+Usually this means the macro was only invoked conditionally." "$LINENO" 5
+fi
+if test -z "${TOOLS_GENAGILEDLL_TRUE}" && test -z "${TOOLS_GENAGILEDLL_FALSE}"; then
+  as_fn_error $? "conditional \"TOOLS_GENAGILEDLL\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 
