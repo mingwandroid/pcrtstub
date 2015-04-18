@@ -67,7 +67,7 @@ ctags:
 	@CCAS@ @CCASFLAGS@ -c -o $@ $<
 
 %.o: %.c
-	@ac_ct_CC@ @CFLAGS@ -c -o $@ $<
+	@ac_ct_CC@ @CFLAGS@ -D_BUILDING_AGILE_DLLIMP -c -o $@ $<
 
 libmsvcrt1_OBJECTS =
 libmsvcrt1_OBJECTS += do_init.o
@@ -2221,9 +2221,16 @@ libmsvcrt2_OBJECTS += stub_wscanf.o
 libmsvcrt2_OBJECTS += imp_wscanf.o
 libmsvcrt2_OBJECTS += stub_wscanf_s.o
 libmsvcrt2_OBJECTS += imp_wscanf_s.o
+libmsvcrt2_OBJECTS += stub__get_invalid_parameter_handler.o
+libmsvcrt2_OBJECTS += imp__get_invalid_parameter_handler.o
+libmsvcrt2_OBJECTS += stub__set_invalid_parameter_handler.o
+libmsvcrt2_OBJECTS += imp__set_invalid_parameter_handler.o
 
-libmsvcrt.a: $(libmsvcrt1_OBJECTS) $(libmsvcrt2_OBJECTS)
+include @srcdir@/../../misc/Makefile
+
+libmsvcrt.a: $(libmsvcrt1_OBJECTS) $(libmsvcrt2_OBJECTS) $(libmsvcrt_LIBOBJS)
 	@-rm libmsvcrt.a || true
 	@ac_ct_AR@ cru libmsvcrt.a $(libmsvcrt1_OBJECTS)
 	@ac_ct_AR@ cru libmsvcrt.a $(libmsvcrt2_OBJECTS)
+	@ac_ct_AR@ cru libmsvcrt.a $(libmsvcrt_LIBOBJS)
 	@RANLIB@ $@

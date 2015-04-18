@@ -95,7 +95,7 @@ FILE *makefileCreate (const char * pth)
           fprintf (makefile, "\t@CCAS@ @CCASFLAGS@ -c -o $@ $<\n\n");
 
           fprintf (makefile, "%%.o: %%.c\n");
-          fprintf (makefile, "\t@ac_ct_CC@ @CFLAGS@ -c -o $@ $<\n\n");
+          fprintf (makefile, "\t@ac_ct_CC@ @CFLAGS@ -D_BUILDING_AGILE_DLLIMP -c -o $@ $<\n\n");
       }
   }
   return makefile;
@@ -125,6 +125,7 @@ void makefileStartGroup (FILE *makefile)
 static void makefilePrintPrologue_AcAmLibtool (FILE *makefile)
 {
   int i;
+
   fprintf (makefile, "\nnoinst_LTLIBRARIES =");
   for (i = 0; i < group_lib_num; ++i) {
       fprintf (makefile, " lib%s%d.la", cur_libbasename, i + 1);
@@ -142,14 +143,26 @@ static void makefilePrintPrologue_AcAmLibtool (FILE *makefile)
 static void makefilePrintPrologue_Ac (FILE *makefile)
 {
   int i;
+
+  /* Hacked for now. Some other way of specifying other things to compile is needed.
+   * The .def file will contains (hand editted) lines such as:
+   *   _get_invalid_parameter_handler = mingw_get_invalid_parameter_handler
+   * Perhaps the format could include a path to the source file in a comment as:
+   *   _get_invalid_parameter_handler = mingw_get_invalid_parameter_handler ; ../../misc/invalid_parameter_handler.c
+   * then @srcdir@/../../misc would be added to VPATH and invalid_parameter_handler.o to 'MAYBE_EMULATED_OBJECTS'.
+   */
+  fprintf (makefile, "\ninclude @srcdir@/../../misc/Makefile\n");
+
   fprintf (makefile, "\nlib%s.a:", cur_libbasename);
   for (i = 0; i < group_lib_num; ++i) {
       fprintf (makefile, " $(lib%s%d_OBJECTS)", cur_libbasename, i + 1);
   }
+  fprintf (makefile, " $(lib%s_LIBOBJS)", cur_libbasename);
   fprintf (makefile, "\n\t@-rm lib%s.a || true\n", cur_libbasename);
   for (i = 0; i < group_lib_num; ++i) {
       fprintf (makefile, "\t@ac_ct_AR@ cru lib%s.a $(lib%s%d_OBJECTS)\n", cur_libbasename, cur_libbasename, i + 1);
   }
+  fprintf (makefile, "\t@ac_ct_AR@ cru lib%s.a $(lib%s_LIBOBJS)\n", cur_libbasename, cur_libbasename);
   fprintf (makefile, "\t@RANLIB@ $@\n");
 }
 
