@@ -423,6 +423,18 @@ lib32/dllcrt1.o: crt/crtdll.c
 	$(COMPILE32) -c $< -o $@ -D__CRTDLL__ -U__MSVCRT__
 lib32/dllcrt2.o: crt/crtdll.c
 	$(COMPILE32) -c $< -o $@ -U__CRTDLL__ -D__MSVCRT__
+lib32/crt1a.o: crt/crtexe.c
+	$(COMPILE32) -c $< -o $@ -D__CRTDLL__ -U__MSVCRT__ -D__BUILDING_AGILE_MSVCRT_DLL
+lib32/crt2a.o: crt/crtexe.c
+	$(COMPILE32) -c $< -o $@ -U__CRTDLL__ -D__MSVCRT__ -D__BUILDING_AGILE_MSVCRT_DLL
+lib32/crt1ua.o: crt/ucrtexe.c
+	$(COMPILE32) -c $< -o $@ -D__CRTDLL__ -U__MSVCRT__ -D__BUILDING_AGILE_MSVCRT_DLL
+lib32/crt2ua.o: crt/ucrtexe.c
+	$(COMPILE32) -c $< -o $@ -U__CRTDLL__ -D__MSVCRT__ -D__BUILDING_AGILE_MSVCRT_DLL
+lib32/dllcrt1a.o: crt/crtdll.c
+	$(COMPILE32) -c $< -o $@ -D__CRTDLL__ -U__MSVCRT__ -D__BUILDING_AGILE_MSVCRT_DLL
+lib32/dllcrt2a.o: crt/crtdll.c
+	$(COMPILE32) -c $< -o $@ -U__CRTDLL__ -D__MSVCRT__ -D__BUILDING_AGILE_MSVCRT_DLL
 
 lib32/gcrt0.o: profile/gcrt0.c
 	$(COMPILE) $(CPPFLAGS32) -c $< -o $@
@@ -451,7 +463,7 @@ if !W32API
 lib32_LIBRARIES += lib32/libmsvcrtdll.a
 lib32_libmsvcrtdll_a_SOURCES = $(src_msvcrt32) lib32/msvcrt.def.in
 lib32_libmsvcrtdll_a_AR = $(DTDEF32) lib32/msvcrt.def && $(AR) $(ARFLAGS)
-lib32_libmsvcrtdll_a_CPPFLAGS=$(CPPFLAGS32) -D__LIBMSVCRT__ $(extra_include) $(sysincludes)
+lib32_libmsvcrtdll_a_CPPFLAGS=$(CPPFLAGS32) -D__LIBMSVCRT__ -D__MINGW_EXPORTED_IF_AGILE=static $(extra_include) $(sysincludes)
 EXTRA_lib32_libmsvcrtdll_a_DEPENDENCIES=lib32/msvcrt.def
 endif
 
@@ -680,6 +692,18 @@ lib64/dllcrt1.o: crt/crtdll.c
 	$(COMPILE64) -c $< -o $@ -D__CRTDLL__ -U__MSVCRT__
 lib64/dllcrt2.o: crt/crtdll.c
 	$(COMPILE64) -c $< -o $@ -U__CRTDLL__ -D__MSVCRT__
+lib64/crt1a.o: crt/crtexe.c
+	$(COMPILE64) -c $< -o $@ -D__CRTDLL__ -U__MSVCRT__ -D__BUILDING_AGILE_MSVCRT_DLL
+lib64/crt2a.o: crt/crtexe.c
+	$(COMPILE64) -c $< -o $@ -U__CRTDLL__ -D__MSVCRT__ -D__BUILDING_AGILE_MSVCRT_DLL
+lib64/crt1ua.o: crt/ucrtexe.c
+	$(COMPILE64) -c $< -o $@ -D__CRTDLL__ -U__MSVCRT__ -D__BUILDING_AGILE_MSVCRT_DLL
+lib64/crt2ua.o: crt/ucrtexe.c
+	$(COMPILE64) -c $< -o $@ -U__CRTDLL__ -D__MSVCRT__ -D__BUILDING_AGILE_MSVCRT_DLL
+lib64/dllcrt1a.o: crt/crtdll.c
+	$(COMPILE64) -c $< -o $@ -D__CRTDLL__ -U__MSVCRT__ -D__BUILDING_AGILE_MSVCRT_DLL
+lib64/dllcrt2a.o: crt/crtdll.c
+	$(COMPILE64) -c $< -o $@ -U__CRTDLL__ -D__MSVCRT__ -D__BUILDING_AGILE_MSVCRT_DLL
 
 lib64/gcrt0.o: profile/gcrt0.c
 	$(COMPILE) $(CPPFLAGS64) -c $< -o $@
@@ -700,7 +724,7 @@ if !W32API
 lib64_LIBRARIES += lib64/libmsvcrtdll.a
 lib64_libmsvcrtdll_a_SOURCES = $(src_msvcrt) lib64/msvcrt.def.in
 lib64_libmsvcrtdll_a_AR = $(DTDEF64) lib64/msvcrt.def && $(AR) $(ARFLAGS)
-lib64_libmsvcrtdll_a_CPPFLAGS=$(CPPFLAGS64) -D__LIBMSVCRT__ $(extra_include) $(sysincludes)
+lib64_libmsvcrtdll_a_CPPFLAGS=$(CPPFLAGS64) -D__LIBMSVCRT__ -D__MINGW_EXPORTED_IF_AGILE=static $(extra_include) $(sysincludes)
 EXTRA_lib64_libmsvcrtdll_a_DEPENDENCIES=lib64/msvcrt.def
 endif
 
@@ -1225,7 +1249,7 @@ if !W32API
 libarm32_LIBRARIES += libarm32/libmsvcrtdll.a
 libarm32_libmsvcrtdll_a_SOURCES = $(src_msvcrt32)
 libarm32_libmsvcrtdll_a_AR = $(DTLIBARM32) && $(AR) $(ARFLAGS)
-libarm32_libmsvcrtdll_a_CPPFLAGS=$(CPPFLAGSARM32) -D__LIBMSVCRT__ $(extra_include) $(sysincludes)
+libarm32_libmsvcrtdll_a_CPPFLAGS=$(CPPFLAGSARM32) -D__LIBMSVCRT__ -D__MINGW_EXPORTED_IF_AGILE=static $(extra_include) $(sysincludes)
 EXTRA_libarm32_libmsvcrtdll_a_DEPENDENCIES=libarm32/msvcrt.def
 endif
 

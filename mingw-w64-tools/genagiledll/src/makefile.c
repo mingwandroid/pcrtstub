@@ -95,7 +95,7 @@ FILE *makefileCreate (const char * pth)
           fprintf (makefile, "\t@CCAS@ @CCASFLAGS@ -c -o $@ $<\n\n");
 
           fprintf (makefile, "%%.o: %%.c\n");
-          fprintf (makefile, "\t@ac_ct_CC@ @CFLAGS@ -D_BUILDING_AGILE_DLLIMP -c -o $@ $<\n\n");
+          fprintf (makefile, "\t@CC@ @CFLAGS@ -D_BUILDING_AGILE_DLLIMP -c -o $@ $<\n\n");
       }
   }
   return makefile;
@@ -160,9 +160,9 @@ static void makefilePrintPrologue_Ac (FILE *makefile)
   fprintf (makefile, " $(lib%s_LIBOBJS)", cur_libbasename);
   fprintf (makefile, "\n\t@-rm lib%s.a || true\n", cur_libbasename);
   for (i = 0; i < group_lib_num; ++i) {
-      fprintf (makefile, "\t@ac_ct_AR@ cru lib%s.a $(lib%s%d_OBJECTS)\n", cur_libbasename, cur_libbasename, i + 1);
+      fprintf (makefile, "\t@AR@ cru lib%s.a $(lib%s%d_OBJECTS)\n", cur_libbasename, cur_libbasename, i + 1);
   }
-  fprintf (makefile, "\t@ac_ct_AR@ cru lib%s.a $(lib%s_LIBOBJS)\n", cur_libbasename, cur_libbasename);
+  fprintf (makefile, "\t@AR@ cru lib%s.a $(lib%s_LIBOBJS)\n", cur_libbasename, cur_libbasename);
   fprintf (makefile, "\t@RANLIB@ $@\n");
 }
 

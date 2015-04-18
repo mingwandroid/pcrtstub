@@ -67,7 +67,7 @@ ctags:
 	@CCAS@ @CCASFLAGS@ -c -o $@ $<
 
 %.o: %.c
-	@ac_ct_CC@ @CFLAGS@ -D_BUILDING_AGILE_DLLIMP -c -o $@ $<
+	@CC@ @CFLAGS@ -D_BUILDING_AGILE_DLLIMP -c -o $@ $<
 
 libmsvcrt1_OBJECTS =
 libmsvcrt1_OBJECTS += do_init.o
@@ -2230,7 +2230,7 @@ include @srcdir@/../../misc/Makefile
 
 libmsvcrt.a: $(libmsvcrt1_OBJECTS) $(libmsvcrt2_OBJECTS) $(libmsvcrt_LIBOBJS)
 	@-rm libmsvcrt.a || true
-	@ac_ct_AR@ cru libmsvcrt.a $(libmsvcrt1_OBJECTS)
-	@ac_ct_AR@ cru libmsvcrt.a $(libmsvcrt2_OBJECTS)
-	@ac_ct_AR@ cru libmsvcrt.a $(libmsvcrt_LIBOBJS)
+	@AR@ cru libmsvcrt.a $(libmsvcrt1_OBJECTS)
+	@AR@ cru libmsvcrt.a $(libmsvcrt2_OBJECTS)
+	@AR@ cru libmsvcrt.a $(libmsvcrt_LIBOBJS)
 	@RANLIB@ $@

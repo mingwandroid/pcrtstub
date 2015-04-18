@@ -18,7 +18,7 @@
 #include <process.h>
 #include <crtdbg.h>
 
-#ifdef BUILDING_AGILE_MSVCRT_DLL
+#ifdef __BUILDING_AGILE_MSVCRT_DLL
 #include "../crtagile/do_init.h"
 #endif
 
@@ -167,7 +167,7 @@ DllMainCRTStartup (HANDLE hDllHandle, DWORD dwReason, LPVOID lpreserved)
   mingw_app_type = 0;
   if (dwReason == DLL_PROCESS_ATTACH)
     {
-#ifdef BUILDING_AGILE_MSVCRT_DLL
+#ifdef __BUILDING_AGILE_MSVCRT_DLL
       do_stub_msvcrt_dll ();
 #endif
       __security_init_cookie ();
