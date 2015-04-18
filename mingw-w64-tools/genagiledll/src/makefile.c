@@ -95,7 +95,7 @@ FILE *makefileCreate (const char * pth)
           fprintf (makefile, "\t@CCAS@ @CCASFLAGS@ -c -o $@ $<\n\n");
 
           fprintf (makefile, "%%.o: %%.c\n");
-          fprintf (makefile, "\t@CC@ @CFLAGS@ -D_BUILDING_AGILE_DLLIMP -c -o $@ $<\n\n");
+          fprintf (makefile, "\t@CC@ @CFLAGS@ -D_BUILDING_AGILE_DLLIMP -D__MINGW_EXPORTED_IF_AGILE -c -o $@ $<\n\n");
       }
   }
   return makefile;

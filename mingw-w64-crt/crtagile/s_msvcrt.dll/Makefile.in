@@ -3,7 +3,6 @@
 
 # The last bit of VPATH is hard-coded ATM!
 VPATH = @srcdir@:@srcdir@/../../misc
-
 prefix = @prefix@
 exec_prefix = @exec_prefix@
 
@@ -69,7 +68,7 @@ ctags:
 	@CCAS@ @CCASFLAGS@ -c -o $@ $<
 
 %.o: %.c
-	@CC@ @CFLAGS@ -D_BUILDING_AGILE_DLLIMP -c -o $@ $<
+	@CC@ @CFLAGS@ -D_BUILDING_AGILE_DLLIMP -D__MINGW_EXPORTED_IF_AGILE -c -o $@ $<
 
 libmsvcrt1_OBJECTS =
 libmsvcrt1_OBJECTS += do_init.o
