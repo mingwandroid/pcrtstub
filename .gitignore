@@ -2,7 +2,6 @@
 *.a
 *.exe
 .dirstamp
-Makefile
 config.h
 .deps
 *.in~
