@@ -211,6 +211,7 @@ int mainCRTStartup (void)
     );
 #endif
   mingw_app_type = 0;
+  do_stub_msvcrt_dll ();
   __security_init_cookie ();
   ret = __tmainCRTStartup ();
 #ifdef __SEH__
