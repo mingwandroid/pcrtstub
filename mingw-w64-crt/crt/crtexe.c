@@ -21,9 +21,7 @@
 #include <sect_attribs.h>
 #include <locale.h>
 
-#ifdef __BUILDING_AGILE_MSVCRT_DLL
-#include "../crtagile/do_init.h"
-#endif
+#include "../crtagile/s_msvcrt.dll/do_init.h"
 
 #ifndef __winitenv
 extern wchar_t *** __MINGW_IMP_SYMBOL(__winitenv);
@@ -184,9 +182,7 @@ int WinMainCRTStartup (void)
     );
 #endif
   mingw_app_type = 1;
-#ifdef __BUILDING_AGILE_MSVCRT_DLL
   do_stub_msvcrt_dll ();
-#endif
   __security_init_cookie ();
   ret = __tmainCRTStartup ();
 #ifdef __SEH__

@@ -157,6 +157,7 @@ src_msvcrt=\
   misc/invalid_parameter_handler.c \
   misc/output_format.c \
   misc/purecall.c \
+  crtagile/do_init_empty.c \
   secapi/_access_s.c \
   secapi/_cgets_s.c \
   secapi/_cgetws_s.c \
@@ -424,17 +425,6 @@ lib32/dllcrt1.o: crt/crtdll.c
 lib32/dllcrt2.o: crt/crtdll.c
 	$(COMPILE32) -c $< -o $@ -U__CRTDLL__ -D__MSVCRT__
 lib32/crt1a.o: crt/crtexe.c
-	$(COMPILE32) -c $< -o $@ -D__CRTDLL__ -U__MSVCRT__ -D__BUILDING_AGILE_MSVCRT_DLL
-lib32/crt2a.o: crt/crtexe.c
-	$(COMPILE32) -c $< -o $@ -U__CRTDLL__ -D__MSVCRT__ -D__BUILDING_AGILE_MSVCRT_DLL
-lib32/crt1ua.o: crt/ucrtexe.c
-	$(COMPILE32) -c $< -o $@ -D__CRTDLL__ -U__MSVCRT__ -D__BUILDING_AGILE_MSVCRT_DLL
-lib32/crt2ua.o: crt/ucrtexe.c
-	$(COMPILE32) -c $< -o $@ -U__CRTDLL__ -D__MSVCRT__ -D__BUILDING_AGILE_MSVCRT_DLL
-lib32/dllcrt1a.o: crt/crtdll.c
-	$(COMPILE32) -c $< -o $@ -D__CRTDLL__ -U__MSVCRT__ -D__BUILDING_AGILE_MSVCRT_DLL
-lib32/dllcrt2a.o: crt/crtdll.c
-	$(COMPILE32) -c $< -o $@ -U__CRTDLL__ -D__MSVCRT__ -D__BUILDING_AGILE_MSVCRT_DLL
 
 lib32/gcrt0.o: profile/gcrt0.c
 	$(COMPILE) $(CPPFLAGS32) -c $< -o $@
@@ -693,17 +683,6 @@ lib64/dllcrt1.o: crt/crtdll.c
 lib64/dllcrt2.o: crt/crtdll.c
 	$(COMPILE64) -c $< -o $@ -U__CRTDLL__ -D__MSVCRT__
 lib64/crt1a.o: crt/crtexe.c
-	$(COMPILE64) -c $< -o $@ -D__CRTDLL__ -U__MSVCRT__ -D__BUILDING_AGILE_MSVCRT_DLL
-lib64/crt2a.o: crt/crtexe.c
-	$(COMPILE64) -c $< -o $@ -U__CRTDLL__ -D__MSVCRT__ -D__BUILDING_AGILE_MSVCRT_DLL
-lib64/crt1ua.o: crt/ucrtexe.c
-	$(COMPILE64) -c $< -o $@ -D__CRTDLL__ -U__MSVCRT__ -D__BUILDING_AGILE_MSVCRT_DLL
-lib64/crt2ua.o: crt/ucrtexe.c
-	$(COMPILE64) -c $< -o $@ -U__CRTDLL__ -D__MSVCRT__ -D__BUILDING_AGILE_MSVCRT_DLL
-lib64/dllcrt1a.o: crt/crtdll.c
-	$(COMPILE64) -c $< -o $@ -D__CRTDLL__ -U__MSVCRT__ -D__BUILDING_AGILE_MSVCRT_DLL
-lib64/dllcrt2a.o: crt/crtdll.c
-	$(COMPILE64) -c $< -o $@ -U__CRTDLL__ -D__MSVCRT__ -D__BUILDING_AGILE_MSVCRT_DLL
 
 lib64/gcrt0.o: profile/gcrt0.c
 	$(COMPILE) $(CPPFLAGS64) -c $< -o $@

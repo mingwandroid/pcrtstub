@@ -27,6 +27,8 @@
 #include "output.h"
 
 static void generate_stub_c (FILE *fp);
+static void generate_stub_empty_c (FILE *fp);
+static void generate_stub_h (FILE *fp);
 
 static const char *cur_IAT = NULL;
 static const char *cur_dllsym = NULL;
@@ -103,6 +105,14 @@ outputSyms (void)
 
   fp = addSrcFopen (makefile, pth, "do_init.c", 0, "wb");
   generate_stub_c (fp);
+  fclose (fp);
+
+  fp = fopen (unifyCat (pth, "do_init_empty.c"), "wb");
+  generate_stub_empty_c (fp);
+  fclose (fp);
+
+  fp = fopen (unifyCat (pth, "do_init.h"), "wb");
+  generate_stub_h (fp);
   fclose (fp);
 
   fp = addSrcFopen (makefile, pth, "sec_start.S", 0, "wb");
@@ -311,4 +321,20 @@ static void generate_stub_c (FILE *fp)
     "\n"
     "  return 0;\n"
     "}\n");
+}
+
+static void generate_stub_h (FILE *fp)
+{
+  printHeader (fp, "//*", " *//");
+  fprintf (fp,
+    "int\n"
+    "do_stub_%s (void);\n", cur_dllsym);
+}
+
+static void generate_stub_empty_c (FILE *fp)
+{
+    printHeader (fp, "//*", " *//");
+    fprintf (fp,
+      "int\n"
+      "do_stub_%s (void)\n{\n}\n", cur_dllsym);
 }
