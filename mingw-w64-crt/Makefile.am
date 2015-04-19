@@ -157,7 +157,7 @@ src_msvcrt=\
   misc/invalid_parameter_handler.c \
   misc/output_format.c \
   misc/purecall.c \
-  crtagile/do_init_empty.c \
+  crtagile/s_msvcrt.dll/do_init_empty.c \
   secapi/_access_s.c \
   secapi/_cgets_s.c \
   secapi/_cgetws_s.c \
