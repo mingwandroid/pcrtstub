@@ -101,12 +101,11 @@ AS_CASE([$with_tools],
     with_tools_gendef=no
     with_tools_genidl=yes
     with_tools_genagiledll=no],
-  [genagiledll,[
+  [genagiledll],[
     with_tools="genagiledll"
     with_tools_gendef=no
     with_tools_genidl=no
     with_tools_genagiledll=yes],
-  ]
   [no],[
     with_tools_gendef=no
     with_tools_genidl=no
