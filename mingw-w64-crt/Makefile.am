@@ -1,5 +1,5 @@
 # INCLUDES = -I$(top_srcdir) -I$(includedir)
-# Done: lib_LIBRARIES = libm.a libmingw32.a libmoldname.a libmingwex.a libcrtdll.a libmsvcrtdll.a libmsvcr80.a
+# Done: lib_LIBRARIES = libm.a libmingw32.a libmoldname.a libmingwex.a libcrtdll.a libmsvcrt.a libmsvcr80.a
 # Done: Turn _libm_dummy.c into a BUILT_SOURCES thing
 # Done: 32-bit runtime compatibility
 # Done: fix make dist
@@ -450,7 +450,7 @@ lib32_libkernel32_a_AR = $(DTLIB32) && $(AR) $(ARFLAGS)
 lib32_libkernel32_a_CPPFLAGS=$(CPPFLAGS32) $(extra_include) $(AM_CPPFLAGS)
 
 if !W32API
-lib32_LIBRARIES += lib32/libmsvcrtdll.a
+lib32_LIBRARIES += lib32/libmsvcrt.a
 lib32_libmsvcrtdll_a_SOURCES = $(src_msvcrt32) lib32/msvcrt.def.in
 lib32_libmsvcrtdll_a_AR = $(DTDEF32) lib32/msvcrt.def && $(AR) $(ARFLAGS)
 lib32_libmsvcrtdll_a_CPPFLAGS=$(CPPFLAGS32) -D__LIBMSVCRT__ -D__MINGW_EXPORTED_IF_AGILE=static $(extra_include) $(sysincludes)
@@ -700,7 +700,7 @@ lib64_libkernel32_a_CPPFLAGS=$(CPPFLAGS64) $(extra_include) $(AM_CPPFLAGS)
 lib64_libkernel32_a_AR = $(DTLIB64) && $(AR) $(ARFLAGS)
 
 if !W32API
-lib64_LIBRARIES += lib64/libmsvcrtdll.a
+lib64_LIBRARIES += lib64/libmsvcrt.a
 lib64_libmsvcrtdll_a_SOURCES = $(src_msvcrt) lib64/msvcrt.def.in
 lib64_libmsvcrtdll_a_AR = $(DTDEF64) lib64/msvcrt.def && $(AR) $(ARFLAGS)
 lib64_libmsvcrtdll_a_CPPFLAGS=$(CPPFLAGS64) -D__LIBMSVCRT__ -D__MINGW_EXPORTED_IF_AGILE=static $(extra_include) $(sysincludes)
@@ -1225,7 +1225,7 @@ libarm32_libkernel32_a_AR = $(DTLIBARM32) && $(AR) $(ARFLAGS)
 libarm32_libkernel32_a_CPPFLAGS=$(CPPFLAGSARM32) $(extra_include) $(AM_CPPFLAGS)
 
 if !W32API
-libarm32_LIBRARIES += libarm32/libmsvcrtdll.a
+libarm32_LIBRARIES += libarm32/libmsvcrt.a
 libarm32_libmsvcrtdll_a_SOURCES = $(src_msvcrt32)
 libarm32_libmsvcrtdll_a_AR = $(DTLIBARM32) && $(AR) $(ARFLAGS)
 libarm32_libmsvcrtdll_a_CPPFLAGS=$(CPPFLAGSARM32) -D__LIBMSVCRT__ -D__MINGW_EXPORTED_IF_AGILE=static $(extra_include) $(sysincludes)

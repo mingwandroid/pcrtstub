@@ -3,6 +3,9 @@
 LIBRARY "msvcrt.dll"
 EXPORTS
 
+_get_invalid_parameter_handler = mingw_get_invalid_parameter_handler {../misc/invalid_parameter_handler.c}
+_set_invalid_parameter_handler = mingw_set_invalid_parameter_handler {../misc/invalid_parameter_handler.c}
+
 iscsymf == __iscsymf
 iscsym == __iscsym
 isascii == __isascii

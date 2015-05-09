@@ -61,9 +61,9 @@ FILE *makefileCreate (const char * pth)
           fprintf (makefile, "exec_prefix = @exec_prefix@\n\n");
 
           /* http://www.gnu.org/software/automake/manual/automake.html#Third_002dParty-Makefiles */
-          fprintf (makefile, "all: lib%s.a\n\n", cur_libbasename);
+          fprintf (makefile, "all: lib%s.a\n\n", cur_outlibbasename);
           fprintf (makefile, "distdir:\n\tcp *.c *.S Makefile.in @PACKAGE@-@VERSION@/s_%s/\n\n", cur_libname);
-          fprintf (makefile, "mostlyclean:\n\trm -rf *.o lib%s.a\n\n", cur_libbasename);
+          fprintf (makefile, "mostlyclean:\n\trm -rf *.o lib%s.a\n\n", cur_outlibbasename);
           fprintf (makefile, "clean: mostlyclean\n\n");
           fprintf (makefile, "distclean: clean\n\trm Makefile\n\n");
           fprintf (makefile, "maintainer-clean: distclean\n\n");
@@ -128,14 +128,14 @@ static void makefilePrintPrologue_AcAmLibtool (FILE *makefile)
 
   fprintf (makefile, "\nnoinst_LTLIBRARIES =");
   for (i = 0; i < group_lib_num; ++i) {
-      fprintf (makefile, " lib%s%d.la", cur_libbasename, i + 1);
+      fprintf (makefile, " lib%s%d.la", cur_outlibbasename, i + 1);
   }
   fprintf (makefile, "\n\n");
-  fprintf (makefile, "lib_LTLIBRARIES = lib%s.la\n", cur_libbasename);
-  fprintf (makefile, "lib%s_la_SOURCES = \n", cur_libbasename);
-  fprintf (makefile, "lib%s_la_LIBADD =", cur_libbasename);
+  fprintf (makefile, "lib_LTLIBRARIES = lib%s.la\n", cur_outlibbasename);
+  fprintf (makefile, "lib%s_la_SOURCES = \n", cur_outlibbasename);
+  fprintf (makefile, "lib%s_la_LIBADD =", cur_outlibbasename);
   for (i = 0; i < group_lib_num; ++i) {
-      fprintf (makefile, " lib%s%d.la", cur_libbasename, i + 1);
+      fprintf (makefile, " lib%s%d.la", cur_outlibbasename, i + 1);
   }
   fprintf (makefile, "\n");
 }
@@ -153,16 +153,16 @@ static void makefilePrintPrologue_Ac (FILE *makefile)
    */
   fprintf (makefile, "\ninclude @srcdir@/../../misc/Makefile\n");
 
-  fprintf (makefile, "\nlib%s.a:", cur_libbasename);
+  fprintf (makefile, "\nlib%s.a:", cur_outlibbasename);
   for (i = 0; i < group_lib_num; ++i) {
-      fprintf (makefile, " $(lib%s%d_OBJECTS)", cur_libbasename, i + 1);
+      fprintf (makefile, " $(lib%s%d_OBJECTS)", cur_outlibbasename, i + 1);
   }
-  fprintf (makefile, " $(lib%s_LIBOBJS)", cur_libbasename);
-  fprintf (makefile, "\n\t@-rm lib%s.a || true\n", cur_libbasename);
+  fprintf (makefile, " $(lib%s_LIBOBJS)", cur_outlibbasename);
+  fprintf (makefile, "\n\t@-rm lib%s .a || true\n", cur_outlibbasename);
   for (i = 0; i < group_lib_num; ++i) {
-      fprintf (makefile, "\t@AR@ cru lib%s.a $(lib%s%d_OBJECTS)\n", cur_libbasename, cur_libbasename, i + 1);
+      fprintf (makefile, "\t@AR@ cru lib%s.a $(lib%s%d_OBJECTS)\n", cur_outlibbasename, cur_outlibbasename, i + 1);
   }
-  fprintf (makefile, "\t@AR@ cru lib%s.a $(lib%s_LIBOBJS)\n", cur_libbasename, cur_libbasename);
+  fprintf (makefile, "\t@AR@ cru lib%s.a $(lib%s_LIBOBJS)\n", cur_outlibbasename, cur_outlibbasename);
   fprintf (makefile, "\t@RANLIB@ $@\n");
 }
 
@@ -193,6 +193,6 @@ void makefileAddSourceFile (FILE * makefile, const char * source, int isFinalFil
           dot[1] = 'o';
           dot[2] = '\0';
       }
-      fprintf (makefile, "lib%s%d_OBJECTS += %s\n", cur_libbasename, group_lib_num, object);
+      fprintf (makefile, "lib%s%d_OBJECTS += %s\n", cur_outlibbasename, group_lib_num, object);
     }
 }

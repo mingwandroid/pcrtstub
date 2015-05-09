@@ -96,7 +96,7 @@ outputSyms (void)
 
   pth = unifyCat (pth, "/");
 
-  makefile = makefileCreate(pth);
+  makefile = makefileCreate (pth);
   if (makefile == NULL) {
       fprintf(stderr, "Error: Failed to create a Makefile in %s\n", pth);
       exit(-1);

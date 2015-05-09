@@ -23,12 +23,15 @@
 #define TK_COLON ','
 #define TK_DOT '.'
 #define TK_NL '\n'
+#define TK_OPENCURLY '{'
+#define TK_CLOSECURLY '}'
 #define TK_STRING 257
 #define TK_DIGIT 258
 #define TK_UNKNOWN 259
 #define TK_NAME 260
-#define TK_LIBRARY 261
-#define TK_EXPORTS 262
+#define TK_SOURCEFILENAME 261
+#define TK_LIBRARY 262
+#define TK_EXPORTS 263
 
 #define TK_DATA  0x200
 
@@ -37,6 +40,7 @@ typedef struct sSymbol {
   const char *sym;
   const char *libsym;
   const char *alias;
+  const char *srcfile;
   int is_data;
   struct sSymbol *subs;
 } sSymbol;
@@ -46,11 +50,13 @@ extern sSymbol *t_sym;
 extern const char *cur_libname;
 /* The input dll filename without extension. */
 extern const char *cur_libbasename;
+/* The output static library filename without any suffix. */
+extern const char *cur_outlibbasename;
 
 const char *unifyStr (const char *);
 const char *unifyCat (const char *, const char *);
 
-void addSymbol (const char *sym, const char *libsym, const char *alias, int is_data);
+void addSymbol (const char *sym, const char *libsym, const char *alias, const char *srcfile, int is_data);
 void sortSymbols (void);
 void dumpSymbols (void);
 void outputSyms (void);

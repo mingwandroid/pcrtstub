@@ -20,6 +20,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <io.h>
 
 #include "token.h"
 
@@ -35,6 +36,8 @@ typedef struct sMem {
   size_t len;
   char name[1];
 } sMem;
+
+#define SUFFIX "agile"
 
 static int t_max = 0, t_pos = 0;
 static char *t_buf = NULL;
@@ -217,23 +220,31 @@ redo:
    return r;
   case '@': case ',': case '.': case '\n': return r;
   case '"':
-    zeroCh ();
-    while ((r = pCh ()) != -1 && r != '"')
-      {
-	rCh ();
-	if (r == '\\') {
-	  if (rCh () == -1) { delCh (); r = -1; break; }
-	}
-      }
-    if (r == '"')
-      { rCh (); delCh (); }
-    return TK_STRING;
+  case TK_OPENCURLY:
+    {
+      int endr = (r == '"') ? '"' : TK_CLOSECURLY;
+      zeroCh ();
+      while ((r = pCh ()) != -1 && r != endr)
+        {
+	  rCh ();
+	  if (r == '\\') {
+	    if (rCh () == -1) { delCh (); r = -1; break; }
+	  }
+        }
+    if (r == endr)
+      { rCh (); delCh ();
+    return endr == '"' ? TK_STRING : TK_SOURCEFILENAME;
+    }
+  }
+  case TK_CLOSECURLY:
+    rCh (); delCh (); return r;
+
   case '0': case '1': case '2': case '3': case '4':
   case '5': case '6': case '7': case '8': case '9':
     bCh (r); readDigit (); return TK_DIGIT;
   default:
     if (r == '_' || r == '?' || (r >= 'a' && r <= 'z')
-	|| (r >= 'A' && r <= 'Z'));
+	|| (r >= 'A' && r <= 'Z') || (r == '.') || (r == '/'));
     else return TK_UNKNOWN;
     while ((r = pCh ()) != -1) {
       if (r <= 0x20) break;
@@ -284,8 +295,10 @@ redo:
 
 const char *cur_libname = "";
 const char *cur_libbasename = "";
+const char *cur_outlibbasename = "";
 static const char *cur_symbol = "";
 static const char *cur_libsymbol = "";
+static const char *cur_srcfile = "";
 static const char *cur_alias = "";
 static int cur_data = 0;
 
@@ -336,7 +349,8 @@ static int parseit (void)
           cur_libbasename = unifyStr (t_buf);
       }
 
-      fprintf (stderr, "Current library-name set to ,%s'\n", cur_libname);
+      fprintf (stderr, "Current library-name set to %s'\n", cur_libname);
+      cur_outlibbasename = unifyCat (cur_libbasename, SUFFIX);
 
       r = expect_newline ("LIBRARY");
       return (r != -1 ? 1 : 0);
@@ -348,7 +362,7 @@ static int parseit (void)
       fprintf (stderr, "Unexpected token ,%s'.  Would have expected a string/name.\n", t_buf);
       return (expect_newline ("UNKNOWN") == -1 ? 0 : 1);
     }
-    cur_symbol = unifyStr (t_buf);
+    cur_symbol = unifyStr (t_buf); 
     cur_alias = "";
     cur_libsymbol = "";
     cur_data = 0;
@@ -380,19 +394,27 @@ static int parseit (void)
 	    }
 	  cur_alias = unifyStr (t_buf);
 	}
+      else if (r == TK_SOURCEFILENAME)
+      {
+          cur_srcfile = unifyStr (t_buf);
+          r = lexit2 ();
+          if (r != -1 && r != TK_NL)
+              r = expect_newline ("SRCFILE");
+          return (r == -1 ? 0 : 1);
+      }
       else
 	{
 	  fprintf (stderr, "Unknown token ,%s'.\n", t_buf);
 	}
     }
 
-    addSymbol (cur_symbol, cur_libsymbol, cur_alias, cur_data);
+    addSymbol (cur_symbol, cur_libsymbol, cur_alias, cur_srcfile, cur_data);
   }
 
   return (r != -1 ? 1 : 0);
 }
 
-void addSymbol (const char *sym, const char *libsym, const char *alias, int is_data)
+void addSymbol (const char *sym, const char *libsym, const char *alias, const char *srcfile, int is_data)
 {
   sSymbol *n;
 
@@ -401,6 +423,7 @@ void addSymbol (const char *sym, const char *libsym, const char *alias, int is_d
   n->sym = sym;
   n->libsym = libsym;
   n->alias = alias;
+  n->srcfile = srcfile;
   n->is_data = is_data;
   n->subs = NULL;
 
@@ -426,7 +449,7 @@ void sortSymbols (void)
 	}
 	if (!r)
 	  {
-	    addSymbol (r->alias, unifyStr (""), unifyStr (""), 1);
+	    addSymbol (r->alias, unifyStr (""), unifyStr (""), unifyStr (""), 1);
 	    r = t_lastsym;
 	  }
 	if (!p)
@@ -468,9 +491,24 @@ void dumpSymbols (void)
   }
 }
 
+#ifdef _WIN32
+#define getcwd(_buf, _max) _getcwd(_buf, _max)
+#endif
+
+/* Makes a good faith effort. This is necessary if the input file references
+ * source as per fn = mingw_fn {../../mingw_fn.c} */
+static void determinePathOfInputFile()
+{
+  char buf[2048];
+  getcwd(&buf[0], sizeof(buf) - 1);
+  if (t_in == stdin) {
+  } else {
+    
+  }
+}
+
 int main(int argc, char *argv[])
 {
-  int r;
   if (argc > 1) {
       t_in = fopen (argv[1], "r");
       if (t_in == NULL) {
@@ -480,7 +518,7 @@ int main(int argc, char *argv[])
   if (t_in == NULL) {
       t_in = stdin;
   }
-
+  determinePathOfInputFile ();
   addCh (-1);
 
   while (parseit ())
