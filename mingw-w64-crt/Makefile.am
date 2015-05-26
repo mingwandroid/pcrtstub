@@ -451,10 +451,10 @@ lib32_libkernel32_a_CPPFLAGS=$(CPPFLAGS32) $(extra_include) $(AM_CPPFLAGS)
 
 if !W32API
 lib32_LIBRARIES += lib32/libmsvcrt.a
-lib32_libmsvcrtdll_a_SOURCES = $(src_msvcrt32) lib32/msvcrt.def.in
-lib32_libmsvcrtdll_a_AR = $(DTDEF32) lib32/msvcrt.def && $(AR) $(ARFLAGS)
-lib32_libmsvcrtdll_a_CPPFLAGS=$(CPPFLAGS32) -D__LIBMSVCRT__ -D__MINGW_EXPORTED_IF_AGILE=static $(extra_include) $(sysincludes)
-EXTRA_lib32_libmsvcrtdll_a_DEPENDENCIES=lib32/msvcrt.def
+lib32_libmsvcrt_a_SOURCES = $(src_msvcrt32) lib32/msvcrt.def.in
+lib32_libmsvcrt_a_AR = $(DTDEF32) lib32/msvcrt.def && $(AR) $(ARFLAGS)
+lib32_libmsvcrt_a_CPPFLAGS=$(CPPFLAGS32) -D__LIBMSVCRT__ -D__MINGW_EXPORTED_IF_AGILE=static $(extra_include) $(sysincludes)
+EXTRA_lib32_libmsvcrt_a_DEPENDENCIES=lib32/msvcrt.def
 endif
 
 lib32_LIBRARIES += lib32/libshell32.a
@@ -701,10 +701,10 @@ lib64_libkernel32_a_AR = $(DTLIB64) && $(AR) $(ARFLAGS)
 
 if !W32API
 lib64_LIBRARIES += lib64/libmsvcrt.a
-lib64_libmsvcrtdll_a_SOURCES = $(src_msvcrt) lib64/msvcrt.def.in
-lib64_libmsvcrtdll_a_AR = $(DTDEF64) lib64/msvcrt.def && $(AR) $(ARFLAGS)
-lib64_libmsvcrtdll_a_CPPFLAGS=$(CPPFLAGS64) -D__LIBMSVCRT__ -D__MINGW_EXPORTED_IF_AGILE=static $(extra_include) $(sysincludes)
-EXTRA_lib64_libmsvcrtdll_a_DEPENDENCIES=lib64/msvcrt.def
+lib64_libmsvcrt_a_SOURCES = $(src_msvcrt) lib64/msvcrt.def.in
+lib64_libmsvcrt_a_AR = $(DTDEF64) lib64/msvcrt.def && $(AR) $(ARFLAGS)
+lib64_libmsvcrt_a_CPPFLAGS=$(CPPFLAGS64) -D__LIBMSVCRT__ -D__MINGW_EXPORTED_IF_AGILE=static $(extra_include) $(sysincludes)
+EXTRA_lib64_libmsvcrt_a_DEPENDENCIES=lib64/msvcrt.def
 endif
 
 lib64_LIBRARIES += lib64/libshell32.a
@@ -1226,10 +1226,10 @@ libarm32_libkernel32_a_CPPFLAGS=$(CPPFLAGSARM32) $(extra_include) $(AM_CPPFLAGS)
 
 if !W32API
 libarm32_LIBRARIES += libarm32/libmsvcrt.a
-libarm32_libmsvcrtdll_a_SOURCES = $(src_msvcrt32)
-libarm32_libmsvcrtdll_a_AR = $(DTLIBARM32) && $(AR) $(ARFLAGS)
-libarm32_libmsvcrtdll_a_CPPFLAGS=$(CPPFLAGSARM32) -D__LIBMSVCRT__ -D__MINGW_EXPORTED_IF_AGILE=static $(extra_include) $(sysincludes)
-EXTRA_libarm32_libmsvcrtdll_a_DEPENDENCIES=libarm32/msvcrt.def
+libarm32_libmsvcrt_a_SOURCES = $(src_msvcrt32)
+libarm32_libmsvcrt_a_AR = $(DTLIBARM32) && $(AR) $(ARFLAGS)
+libarm32_libmsvcrt_a_CPPFLAGS=$(CPPFLAGSARM32) -D__LIBMSVCRT__ -D__MINGW_EXPORTED_IF_AGILE=static $(extra_include) $(sysincludes)
+EXTRA_libarm32_libmsvcrt_a_DEPENDENCIES=libarm32/msvcrt.def
 endif
 
 libarm32_LIBRARIES += libarm32/libshell32.a
