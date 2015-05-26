@@ -68,8 +68,8 @@ FILE *makefileCreate (const char * pth)
           fprintf (makefile, "distclean: clean\n\trm Makefile\n\n");
           fprintf (makefile, "maintainer-clean: distclean\n\n");
           fprintf (makefile, "installdirs:\n\tmkdir -p %s\n\n", makefileInstallDir ());
-          fprintf (makefile, "install: installdirs\n\tcp lib%s.a %s/lib%s.a\n\n", cur_libbasename, makefileInstallDir (), cur_libbasename);
-          fprintf (makefile, "uninstall:\n\trm %s/lib%s.a\n\n", makefileInstallDir (), cur_libbasename);
+		  fprintf (makefile, "install: installdirs\n\tcp lib%s.a %s/lib%s.a\n\n", cur_outlibbasename, makefileInstallDir (), cur_outlibbasename);
+		  fprintf (makefile, "uninstall:\n\trm %s/lib%s.a\n\n", makefileInstallDir (), cur_outlibbasename);
 
           /* Empty and simple forwarding rules. */
           fprintf (makefile, "distclean-recursive: distclean\n\n");
