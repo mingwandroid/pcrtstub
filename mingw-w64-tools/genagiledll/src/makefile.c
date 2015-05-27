@@ -51,7 +51,7 @@ FILE *makefileCreate (const char * pth)
     ext = ".in";
   }
 
-  makefile = fopen (unifyCat (pth, unifyCat ("Makefile", ext)), "w");
+  makefile = fopen (unifyCat (pth, unifyCat ("Makefile", ext)), "wb");
   if (makefile != NULL) {
       printHeader (makefile, "#", "");
       if (use_am_libtool == 0) {
