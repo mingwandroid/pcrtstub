@@ -20,11 +20,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#if defined(_WIN32)
 #include <direct.h>
+#else
+#include <sys/stat.h>
+#endif
 
 #include "token.h"
 #include "makefile.h"
 #include "output.h"
+
+#if defined(_WIN32)
+#define mkdir(_n, _p) _mkdir((_n))
+#endif
 
 static void generate_stub_c (FILE *fp);
 static void generate_stub_empty_c (FILE *fp);
@@ -90,7 +98,7 @@ outputSyms (void)
   sSymbol *l;
   const char *pth = unifyCat ("./s_", cur_libname);
 
-  _mkdir (pth);
+  mkdir (pth, S_IRUSR|S_IWUSR);
 
   init_curIAT ();
 
