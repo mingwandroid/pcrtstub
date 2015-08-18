@@ -1,2 +1,2 @@
-libmsvcrt_LIBOBJS =
-libmsvcrt_LIBOBJS += invalid_parameter_handler.o
+libmsvcrtagile_LIBOBJS =
+libmsvcrtagile_LIBOBJS += invalid_parameter_handler.o
