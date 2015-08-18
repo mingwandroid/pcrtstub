@@ -56,7 +56,7 @@ FILE *makefileCreate (const char * pth)
       printHeader (makefile, "#", "");
       if (use_am_libtool == 0) {
 
-          fprintf (makefile, "VPATH = @srcdir@\n");
+          fprintf (makefile, "VPATH = @srcdir@:@srcdir@/../../misc\n");
           fprintf (makefile, "prefix = @prefix@\n");
           fprintf (makefile, "exec_prefix = @exec_prefix@\n\n");
 
