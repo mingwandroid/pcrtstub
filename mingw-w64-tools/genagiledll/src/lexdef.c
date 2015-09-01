@@ -367,6 +367,7 @@ static int parseit (void)
     cur_symbol = unifyStr (t_buf); 
     cur_alias = "";
     cur_libsymbol = "";
+    cur_srcfile = "";
     cur_data = 0;
     while ((r = lexit2 ()) != -1 && r != TK_NL)
     {
@@ -399,10 +400,6 @@ static int parseit (void)
       else if (r == TK_SOURCEFILENAME)
       {
           cur_srcfile = unifyStr (t_buf);
-          r = lexit2 ();
-          if (r != -1 && r != TK_NL)
-              r = expect_newline ("SRCFILE");
-          return (r == -1 ? 0 : 1);
       }
       else
 	{
