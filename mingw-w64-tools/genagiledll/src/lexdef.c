@@ -465,6 +465,87 @@ void sortSymbols (void)
     }
 }
 
+/* Sorts on the directory name of each symbol which identifies a srcfile */
+const char * getVPATH (void)
+{
+  sSymbol *c = NULL;
+  int pass = 0;
+  int count = 0;
+  int i = 0, last_i = 0;
+  size_t dirname_space = 0, dirnames_space = 0;
+  char * dirnames = NULL;
+  char ** dirs = NULL;
+
+  for (pass = 0; pass < 2; ++pass)
+    {
+      if (pass == 1)
+        {
+          dirnames = alloca (dirnames_space);
+          dirs = alloca (count * sizeof(char*));
+          fprintf (stdout, "dirnames = %p, dirnames_end = %p, dirs = %p, dirs_end = %p\n", dirnames, &dirnames[dirnames_space], dirs, &dirs[count]);
+        }
+      c = t_sym;
+      count = 0;
+      while (c)
+        {
+          if (c->srcfile && c->srcfile[0])
+            {
+              dirname_space = 1 + (strrchr(c->srcfile, '/') ? (size_t)(strrchr(c->srcfile, '/') - c->srcfile) : strlen(c->srcfile));
+              if (!pass)
+                {
+                  dirnames_space += dirname_space;
+                }
+              else
+                {
+                  fflush (stdout);
+                  dirs[count] = dirnames;
+                  dirnames += dirname_space;
+                  memcpy(dirs[count], c->srcfile, dirname_space - 1);
+                  dirs[count][dirname_space - 1] = '\0';
+                }
+              count++;
+            }
+          c = c->next;
+        }
+    }
+  if (!count)
+    {
+      dirnames = malloc(1);
+      dirnames[0] = '\0';
+      return dirnames;
+    }
+  /* Sort to make runs of the same folder */
+  qsort(dirs, count, sizeof(char*), strcmp);
+  /* count - 1 * ':' + '\0' */
+  dirnames_space = count;
+  for (pass = 0; pass < 2; ++pass)
+    {
+      if ( pass == 1)
+        {
+          dirnames = malloc(dirnames_space);
+          dirnames[0] = '\0';
+        }
+      for (i = 0; i < count; ++i)
+        {
+        if (!i || strcmp(dirs[i], dirs[i-1]))
+        {
+            if (!pass)
+              {
+                dirnames_space += strlen(dirs[i]);
+                last_i = i;
+              }
+            else
+              {
+                strcat (dirnames, dirs[i]);
+                if (i != last_i)
+                  strcat(dirnames, ":");
+              }
+        }
+        }
+    }
+  return dirnames;
+}
+
 void dumpSymbols (void)
 {
   sSymbol *l, *i;
@@ -526,6 +607,7 @@ int main(int argc, char *argv[])
 
   sortSymbols ();
   dumpSymbols ();
+  getVPATH ();
   outputSyms ();
   return 0;
 }
