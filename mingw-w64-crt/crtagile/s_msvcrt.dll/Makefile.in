@@ -69,7 +69,7 @@ ctags:
 %.o: %.c
 	@CC@ @CFLAGS@ -D_BUILDING_AGILE_DLLIMP -D__MINGW_EXPORTED_IF_AGILE="" -D__LIBMSVCRT__ -std=gnu99 -D_WIN32_WINNT=0x0f00 -Wall -Wextra -Wformat -Wstrict-aliasing -Wshadow -Wpacked -Winline -Wimplicit-function-declaration -Wmissing-noreturn -Wmissing-prototypes -c -o $@ $<
 
-libmsvcrt1_OBJECTS =
+libmsvcrtagile1_OBJECTS =
 libmsvcrtagile1_OBJECTS += do_init.o
 libmsvcrtagile1_OBJECTS += sec_start.o
 libmsvcrtagile1_OBJECTS += stub__get_invalid_parameter_handler.o
@@ -1162,7 +1162,7 @@ libmsvcrtagile1_OBJECTS += stub__snprintf.o
 libmsvcrtagile1_OBJECTS += imp__snprintf.o
 libmsvcrtagile1_OBJECTS += stub__snprintf_c.o
 
-libmsvcrt2_OBJECTS =
+libmsvcrtagile2_OBJECTS =
 libmsvcrtagile2_OBJECTS += imp__snprintf_c.o
 libmsvcrtagile2_OBJECTS += stub__snprintf_c_l.o
 libmsvcrtagile2_OBJECTS += imp__snprintf_c_l.o
@@ -2226,11 +2226,12 @@ libmsvcrtagile2_OBJECTS += imp_wscanf.o
 libmsvcrtagile2_OBJECTS += stub_wscanf_s.o
 libmsvcrtagile2_OBJECTS += imp_wscanf_s.o
 
-include @srcdir@/../../misc/Makefile
+libmsvcrtagile3_EMUL_OBJECTS =
+libmsvcrtagile3_EMUL_OBJECTS += invalid_parameter_handler.o
 
-libmsvcrtagile.a: $(libmsvcrtagile1_OBJECTS) $(libmsvcrtagile2_OBJECTS) $(libmsvcrtagile_LIBOBJS)
-	@-rm libmsvcrtagile .a || true
-	@AR@ cru libmsvcrtagile.a $(libmsvcrtagile1_OBJECTS)
-	@AR@ cru libmsvcrtagile.a $(libmsvcrtagile2_OBJECTS)
-	@AR@ cru libmsvcrtagile.a $(libmsvcrtagile_LIBOBJS)
+libmsvcrtagile.a: $(libmsvcrtagile1_OBJECTS) $(libmsvcrtagile2_OBJECTS) $(libmsvcrtagile3_EMUL_OBJECTS)
+	@-rm $@ || true
+	@AR@ cru $@ $(libmsvcrtagile1_OBJECTS)
+	@AR@ cru $@ $(libmsvcrtagile2_OBJECTS)
+	@AR@ cru $@ $(libmsvcrtagile3_EMUL_OBJECTS)
 	@RANLIB@ $@

@@ -35,7 +35,8 @@
 
 #define TK_DATA  0x200
 
-typedef struct sSymbol {
+typedef struct sSymbol
+{
   struct sSymbol *next;
   const char *sym;
   const char *libsym;
@@ -56,7 +57,8 @@ extern const char *cur_outlibbasename;
 const char *unifyStr (const char *);
 const char *unifyCat (const char *, const char *);
 
-void addSymbol (const char *sym, const char *libsym, const char *alias, const char *srcfile, int is_data);
+void addSymbol (const char *sym, const char *libsym, const char *alias,
+		const char *srcfile, int is_data);
 void sortSymbols (void);
 void dumpSymbols (void);
-void outputSyms (void);
+void outputSyms (const char *vpath, const char *emul_sources);

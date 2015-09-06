@@ -17,4 +17,4 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-void printHeader (FILE *fp, char *commentBegin, char *commentEnd);
+void printHeader (FILE * fp, char *commentBegin, char *commentEnd);

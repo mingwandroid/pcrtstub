@@ -17,7 +17,9 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-FILE *makefileCreate (const char * pth);
-void makefileStartGroup (FILE *makefile);
-void makefilePrintPrologue (FILE *makefile);
-void makefileAddSourceFile (FILE * makefile, const char * source, int isFinalFile);
+FILE *makefileCreate (const char *pth, const char *vpath);
+void makefileStartGroup (FILE * makefile);
+void makefileStartEmulatedGroups (FILE * makefile);
+void makefilePrintPrologue (FILE * makefile);
+void makefileAddSourceFile (FILE * makefile, const char *source,
+			    int isFinalFile);
