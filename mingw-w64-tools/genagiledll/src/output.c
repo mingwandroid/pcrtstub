@@ -195,7 +195,7 @@ outputSyms (char const *vpath, char const *emul_sources)
 	addSrcFopen (makefile, pth, unifyCat ("imp_", hname),
 		     l->next == l_last_nonemulated ? 1 : 0, "wb");
 
-      printHeader (fp, "//*", " *//");
+      printHeader (fp, "/*", " */");
 
       fprintf (fp, "\t.file \"imp_%s\"\n", hname);
 
@@ -257,7 +257,7 @@ outputSyms (char const *vpath, char const *emul_sources)
 	      const char *hn = unifyCat (p->sym, ".S");
 	      fp = fopen (unifyCat (pth, unifyCat ("imp_", hn)), "wb");
 
-	      printHeader (fp, "//*", " *//");
+	      printHeader (fp, "/*", " */");
 
 	      fprintf (fp, "\t.file \"imp_%s\"\n", hn);
 
@@ -329,7 +329,7 @@ outputSyms (char const *vpath, char const *emul_sources)
 static void
 generate_stub_c (FILE * fp)
 {
-  printHeader (fp, "//*", " *//");
+  printHeader (fp, "/*", " */");
   fprintf (fp,
 	   "#include <windows.h>\n"
 	   "#include <stdlib.h>\n"
@@ -385,13 +385,13 @@ generate_stub_c (FILE * fp)
 static void
 generate_stub_h (FILE * fp)
 {
-  printHeader (fp, "//*", " *//");
+  printHeader (fp, "/*", " */");
   fprintf (fp, "int\n" "do_stub_%s (void);\n", cur_dllsym);
 }
 
 static void
 generate_stub_empty_c (FILE * fp)
 {
-  printHeader (fp, "//*", " *//");
+  printHeader (fp, "/*", " */");
   fprintf (fp, "int\n" "do_stub_%s (void)\n{\n}\n", cur_dllsym);
 }

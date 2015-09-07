@@ -22,6 +22,8 @@
 #include <string.h>
 #if defined(_WIN32)
 #include <io.h>
+#else
+#include <unistd.h>
 #endif
 
 #include "token.h"
@@ -582,14 +584,13 @@ getEmulSourcesAndVPATH (const char *prefix, char **vpath, char **emul_sources)
     int is_dir;
     size_t space_elements_storage;
     size_t space_result;
-    char **things;
     const char *prefix;
     char *elements_storage;
     char **elements;
     char *result;
   } things_t;
-  things_t things[2] = { {1, 0, 0, NULL, prefix, NULL, NULL, NULL},
-  {0, 0, 0, NULL, "", NULL, NULL, NULL}
+  things_t things[2] = { {1, 0, 0, prefix, NULL, NULL, NULL},
+  {0, 0, 0, "", NULL, NULL, NULL}
   };
   int pass = 0;
   size_t count = 0, this_space, i, final_i;
@@ -662,7 +663,7 @@ getEmulSourcesAndVPATH (const char *prefix, char **vpath, char **emul_sources)
   /* Sort to make runs of the same directories or files. */
   for (thing = &things[0]; thing < &things[2]; ++thing)
     {
-      qsort (thing->things, count, sizeof (char *), stringcompare);
+      qsort (thing->elements, count, sizeof (char *), stringcompare);
       /* count - 1 * ':' + '\0' */
       thing->space_result = count + (count * strlen (thing->prefix));
       for (pass = 0; pass < 2; ++pass)
@@ -678,7 +679,7 @@ getEmulSourcesAndVPATH (const char *prefix, char **vpath, char **emul_sources)
 		{
 		  if (pass == 0)
 		    {
-		      thing->space_result += strlen (things->elements[i]);
+		      thing->space_result += strlen (thing->elements[i]);
 		      final_i = i;
 		    }
 		  else
